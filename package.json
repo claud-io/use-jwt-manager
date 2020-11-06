@@ -10,7 +10,7 @@
   },
   "description": "hook boilerplate",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js --mode production"
+    "build": "webpack --config ./webpack.config.js"
   },
   "dependencies": {
     "react": "^17.0.1",

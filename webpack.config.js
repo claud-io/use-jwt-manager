@@ -1,12 +1,20 @@
-const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
-const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: ['./src/index.tsx'],
   externals: {
-    react: 'react',
-    'react-dom': 'reactDOM',
+    react: {
+      root: 'React',
+      commonjs2: 'react',
+      commonjs: 'react',
+      amd: 'react',
+    },
+    'react-dom': {
+      root: 'ReactDOM',
+      commonjs2: 'react-dom',
+      commonjs: 'react-dom',
+      amd: 'react-dom',
+    },
   },
   module: {
     rules: [
@@ -24,7 +32,6 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin({})],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
@@ -32,7 +39,6 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    // filename: 'index.js',
+    filename: 'index.js',
   },
-  plugins: [new Dotenv()],
 };

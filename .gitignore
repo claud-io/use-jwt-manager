@@ -46,5 +46,6 @@ bower_components
 psd
 thumb
 sketch
+dist/
 
-# End of https://www.toptal.com/developers/gitignore/api/react,osx
+# End of https://www.toptal.com/developers/gitignore/api/react,os
