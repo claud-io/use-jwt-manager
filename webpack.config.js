@@ -40,5 +40,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     filename: 'index.js',
+    // library: 'reactHookName',
+    libraryTarget: 'commonjs2',
   },
 };
