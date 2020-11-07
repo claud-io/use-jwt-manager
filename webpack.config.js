@@ -15,6 +15,8 @@ module.exports = {
       commonjs: 'react-dom',
       amd: 'react-dom',
     },
+    axios: 'axios',
+    lockr: 'lockr',
   },
   module: {
     rules: [

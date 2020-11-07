@@ -1,5 +1,5 @@
 {
-  "name": "ts-react-hook-starter",
+  "name": "use-jwt-auth",
   "author": "claudio biselli",
   "version": "0.1.0",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "engines": {
     "node": ">=10"
   },
-  "description": "hook boilerplate",
+  "description": "hook for jwt auth",
   "scripts": {
     "test": "jest",
     "build": "webpack --config ./webpack.config.js"

@@ -19,7 +19,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    // "isolatedModules": true,
     "declaration": true,
   },
   "include": ["src"],
