@@ -2,13 +2,17 @@
   "name": "use-jwt-auth",
   "author": "claudio biselli",
   "version": "0.1.0",
+  "description": "hook for jwt auth",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/claud-io/use-jwt-auth"
+  },
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
-  "description": "hook for jwt auth",
   "scripts": {
     "test": "jest",
     "build": "webpack --config ./webpack.config.js"
