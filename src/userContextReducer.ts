@@ -1,4 +1,4 @@
-import { IUser, IUserContextReducerParams } from './UserContext';
+import { IUser, IUserContextReducerParams } from './constants/types';
 
 type Actions =
   | { type: 'LOGIN'; payload: { user: IUser; access_token: string; refresh_token: string } | {} }

@@ -1,7 +1,10 @@
 {
   "name": "use-jwt-manager",
-  "author": "claudio biselli",
-  "version": "0.1.0",
+  "author": {
+    "name": "claudio biselli",
+    "email": "cbiselli89@gmail.com"
+  },
+  "version": "0.1.2",
   "description": "hook for jwt auth",
   "repository": {
     "type": "git",
