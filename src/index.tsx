@@ -3,27 +3,14 @@ import Lockr from 'lockr';
 import { useEffect } from 'react';
 import axios from 'axios';
 import userContextReducer from './userContextReducer';
-import { IUserContextReducerParams, ITokenParam, IUser } from './UserContext';
+import { IUserContextReducerParams, jwtManagerContext, ITokenParam, IUser, useJwtManagerProps } from './constants/types';
 
 const initialState: IUserContextReducerParams = {
   initialized: false,
   authenticated: false,
 };
 
-interface Props {
-  refresh: () => Promise<ITokenParam>;
-  me: { (): Promise<any>; (): Promise<IUser> };
-  login: { (user: any): Promise<any>; (arg0: IUser): Promise<ITokenParam> };
-  config: { TOKEN_KEY: string; REFRESH_TOKEN_KEY: string };
-}
-
-interface useJwtState extends IUserContextReducerParams {
-  login: (user: IUser) => void;
-  logout: () => void;
-  refrshToken: () => void;
-}
-
-const useJWT: (props: Props) => useJwtState = ({ refresh, me, login, config }) => {
+const useJwtManager: (props: useJwtManagerProps) => jwtManagerContext = ({ refresh, me, login, config }) => {
   const [state, dispatch] = React.useReducer(userContextReducer, initialState);
   const { TOKEN_KEY, REFRESH_TOKEN_KEY } = config;
 
@@ -76,4 +63,4 @@ const useJWT: (props: Props) => useJwtState = ({ refresh, me, login, config }) =
     refrshToken: refreshToken,
   };
 };
-export default useJWT;
+export default useJwtManager;
