@@ -1,11 +1,11 @@
 {
-  "name": "@claud-io/use-jwt-auth",
+  "name": "use-jwt-manager",
   "author": "claudio biselli",
   "version": "0.1.0",
   "description": "hook for jwt auth",
   "repository": {
     "type": "git",
-    "url": "https://github.com/claud-io/use-jwt-auth"
+    "url": "https://github.com/claud-io/use-jwt-manager"
   },
   "license": "MIT",
   "main": "dist/index.js",

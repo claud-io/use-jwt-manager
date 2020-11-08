@@ -1,3 +1,3 @@
-# use-jwt-auth
+# use-jwt-manager
 
 depends on Lockr and axios
