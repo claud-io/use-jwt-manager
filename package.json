@@ -1,5 +1,5 @@
 {
-  "name": "use-jwt-auth",
+  "name": "@claud-io/use-jwt-auth",
   "author": "claudio biselli",
   "version": "0.1.0",
   "description": "hook for jwt auth",
