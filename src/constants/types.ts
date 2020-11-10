@@ -1,12 +1,12 @@
-interface IUser {
+interface UserDetails {
   id?: number;
   username?: string;
   password?: string;
   [x: string]: any;
 }
 
-interface IUserContextReducerParams {
-  user?: IUser;
+interface UserContextReducerParams {
+  user?: UserDetails;
   access_token?: string;
   refresh_token?: string;
   initialized?: boolean;
@@ -14,28 +14,31 @@ interface IUserContextReducerParams {
   error?: string;
 }
 
-interface IUserContext extends IUserContextReducerParams {
-  login: (user: IUser) => void;
-  logout: () => void;
-  refrshToken: () => void;
-}
-
-interface ITokenParam {
+interface TokenParams {
   access_token: string;
   refresh_token?: string;
+  [x: string]: any;
 }
 
-interface useJwtManagerProps {
-  refresh: () => Promise<ITokenParam>;
-  me: { (): Promise<any>; (): Promise<IUser> };
-  login: { (user: any): Promise<any>; (arg0: IUser): Promise<ITokenParam> };
+interface jwtManagerProps {
+  refresh: () => Promise<TokenParams>;
+  me: () => Promise<UserDetails>;
+  login: (user: UserDetails) => Promise<TokenParams>;
   config: { TOKEN_KEY: string; REFRESH_TOKEN_KEY: string };
 }
 
-interface jwtManagerContext extends IUserContextReducerParams {
-  login: (user: IUser) => void;
-  logout: () => void;
-  refrshToken: () => void;
+interface jwtManagerContext extends UserContextReducerParams {
+  login: (user: UserDetails) => Promise<UserDetails>;
+  logout: () => Promise<boolean>;
 }
 
-export { ITokenParam, IUser, IUserContext, IUserContextReducerParams, useJwtManagerProps, jwtManagerContext };
+class JwtError extends Error {
+  cause: any;
+  constructor(message: string, cause: any) {
+    super(message);
+    this.cause = cause;
+    this.name = 'JwtError';
+  }
+}
+
+export { TokenParams, UserDetails, UserContextReducerParams, jwtManagerProps, jwtManagerContext, JwtError };

@@ -3,20 +3,28 @@ import Lockr from 'lockr';
 import { useEffect } from 'react';
 import axios from 'axios';
 import userContextReducer from './userContextReducer';
-import { IUserContextReducerParams, jwtManagerContext, ITokenParam, IUser, useJwtManagerProps } from './constants/types';
+import {
+  UserContextReducerParams,
+  jwtManagerContext,
+  TokenParams,
+  UserDetails,
+  jwtManagerProps,
+  JwtError,
+} from './constants/types';
 
-const initialState: IUserContextReducerParams = {
+const initialState: UserContextReducerParams = {
   initialized: false,
   authenticated: false,
 };
 
-const useJwtManager: (props: useJwtManagerProps) => jwtManagerContext = ({ refresh, me, login, config }) => {
+/**
+ * return the application's authentication status, pass it to a context so that it can be used everywhere
+ * @param jwtManagerProps
+ * @returns a jwtManagerContext
+ */
+const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh, me, login, config }) => {
   const [state, dispatch] = React.useReducer(userContextReducer, initialState);
   const { TOKEN_KEY, REFRESH_TOKEN_KEY } = config;
-
-  useEffect(() => {
-    refreshToken();
-  }, []);
 
   const refreshToken = useCallback(() => {
     const refresh_token: string = Lockr.get(REFRESH_TOKEN_KEY);
@@ -26,34 +34,47 @@ const useJwtManager: (props: useJwtManagerProps) => jwtManagerContext = ({ refre
       axios.defaults.headers.Authorization = 'Bearer ' + refresh_token;
       refresh()
         .then(handleTokenReceived)
-        .catch((message: string) => dispatch({ type: 'ERROR', payload: { error: message || 'refresh error' } }));
+        .catch((cause: any) => {
+          throw new JwtError('An error occurred trying to refresh the token', cause);
+        });
     }
   }, [state.authenticated]);
 
-  const handleTokenReceived = useCallback(({ access_token, refresh_token }: ITokenParam) => {
+  useEffect(refreshToken, []);
+
+  const handleTokenReceived = useCallback(async ({ access_token, refresh_token }: TokenParams) => {
     Lockr.set(TOKEN_KEY, access_token);
     if (refresh_token) {
       Lockr.set(REFRESH_TOKEN_KEY, refresh_token);
     }
     axios.defaults.headers.Authorization = 'Bearer ' + access_token;
-    me()
-      .then((user: IUser) => dispatch({ type: 'LOGIN', payload: { user, access_token, refresh_token } }))
-      .catch((message: string) => dispatch({ type: 'ERROR', payload: { error: message || 'me error' } }));
+    return await me()
+      .then((user: UserDetails) => {
+        dispatch({ type: 'LOGIN', payload: { user, access_token, refresh_token } });
+        return user;
+      })
+      .catch((cause: any) => {
+        throw new JwtError('An error occurred retrieving the user information', cause);
+      });
   }, []);
 
   const _login = useCallback(
-    (user: IUser) =>
-      login(user)
+    async (user: UserDetails) =>
+      await login(user)
         .then(handleTokenReceived)
-        .catch((message: string) => dispatch({ type: 'ERROR', payload: { error: message || 'login error' } })),
+        .then((user) => user)
+        .catch((cause: any) => {
+          throw new JwtError('An error occurred trying to log in', cause);
+        }),
     []
   );
 
-  const _logout = useCallback(() => {
+  const _logout = useCallback(async () => {
     Lockr.rm(TOKEN_KEY);
     Lockr.rm(REFRESH_TOKEN_KEY);
     axios.defaults.headers.Authorization = null;
     dispatch({ type: 'LOGOUT' });
+    return await true;
   }, []);
 
   return {

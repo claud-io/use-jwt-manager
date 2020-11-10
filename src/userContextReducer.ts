@@ -1,11 +1,10 @@
-import { IUser, IUserContextReducerParams } from './constants/types';
+import { UserDetails, UserContextReducerParams } from './constants/types';
 
 type Actions =
-  | { type: 'LOGIN'; payload: { user: IUser; access_token: string; refresh_token: string } | {} }
-  | { type: 'ERROR'; payload: { error: string } }
+  | { type: 'LOGIN'; payload: { user: UserDetails; access_token: string; refresh_token: string } | {} }
   | { type: 'LOGOUT' };
 
-const userContextReducer = (state: IUserContextReducerParams, action: Actions): IUserContextReducerParams => {
+const userContextReducer = (state: UserContextReducerParams, action: Actions): UserContextReducerParams => {
   switch (action.type) {
     case 'LOGIN':
       return {
@@ -14,8 +13,6 @@ const userContextReducer = (state: IUserContextReducerParams, action: Actions): 
         authenticated: true,
         initialized: true,
       };
-    case 'ERROR':
-      return { ...state, ...action.payload };
     case 'LOGOUT':
       return { authenticated: false, initialized: true };
   }
