@@ -43,14 +43,17 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
   useEffect(refreshToken, []);
 
   const handleTokenReceived = useCallback(async ({ access_token, refresh_token }: TokenParams) => {
+    let rToken = refresh_token;
     Lockr.set(TOKEN_KEY, access_token);
-    if (refresh_token) {
-      Lockr.set(REFRESH_TOKEN_KEY, refresh_token);
+    if (rToken) {
+      Lockr.set(REFRESH_TOKEN_KEY, rToken);
+    } else {
+      rToken = Lockr.get(REFRESH_TOKEN_KEY);
     }
     axios.defaults.headers.Authorization = 'Bearer ' + access_token;
     return await me()
       .then((user: UserDetails) => {
-        dispatch({ type: 'LOGIN', payload: { user, access_token, refresh_token } });
+        dispatch({ type: 'LOGIN', payload: { user, access_token, refresh_token: rToken } });
         return user;
       })
       .catch((cause: any) => {

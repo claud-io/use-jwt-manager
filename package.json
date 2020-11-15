@@ -4,7 +4,7 @@
     "name": "claudio biselli",
     "email": "cbiselli89@gmail.com"
   },
-  "version": "0.1.2",
+  "version": "0.1.66",
   "description": "hook for jwt auth",
   "repository": {
     "type": "git",
@@ -18,9 +18,13 @@
   },
   "scripts": {
     "test": "jest",
+    "v:patch": "npm version patch --no-git-tag-version --force",
+    "v:minor": "npm version minor --no-git-tag-version --force",
+    "v:major": "npm version major --no-git-tag-version --force",
+    "prepublish": "npm run test && rm -rf dist && npm run build && npm run v:patch",
     "build": "webpack --config ./webpack.config.js"
   },
-  "dependencies": {
+  "peerDependencies": {
     "axios": "^0.21.0",
     "lockr": "^0.8.5",
     "react": "^17.0.1",

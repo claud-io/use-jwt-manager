@@ -97,7 +97,7 @@ test('login with correct user will succeed and can log out', async () => {
   expect(Lockr.get(REFRESH_TOKEN_KEY)).toBe(undefined);
 });
 
-test('login with wrong user will fail', async () => {
+test('login with wrong user will fail', () => {
   Lockr.rm(TOKEN_KEY);
   Lockr.rm(REFRESH_TOKEN_KEY);
   const { result, waitForNextUpdate } = renderHook(() => useJWT({ login, me, refresh, config }));
@@ -106,12 +106,11 @@ test('login with wrong user will fail', async () => {
   expect(result.current.initialized).toBe(true);
   expect(result.current.authenticated).toBe(false);
 
-  await act(async () => {
+  act(() => {
     //log in with existing user
     result.current.login({ username: 'vero', password: 'vera' }).catch((error: JwtError) => {
       expect(error.cause.code).toBe('B4N4N43');
     });
-    await waitForNextUpdate();
   });
 
   //assert user fail to log in
