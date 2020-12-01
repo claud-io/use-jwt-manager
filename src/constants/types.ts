@@ -30,6 +30,7 @@ interface jwtManagerProps {
 interface jwtManagerContext extends UserContextReducerParams {
   login: (user: UserDetails) => Promise<UserDetails>;
   logout: () => Promise<boolean>;
+  refresh: () => void
 }
 
 class JwtError extends Error {

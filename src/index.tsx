@@ -84,7 +84,7 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
     ...state,
     login: _login,
     logout: _logout,
-    refrshToken: refreshToken,
+    refresh: refreshToken,
   };
 };
 export default useJwtManager;
