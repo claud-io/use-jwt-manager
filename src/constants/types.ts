@@ -14,7 +14,7 @@ interface UserContextReducerParams {
 }
 
 interface TokenParams {
-  access_token: string;
+  token: string;
   [x: string]: any;
 }
 
@@ -22,7 +22,7 @@ interface jwtManagerProps {
   refresh: () => Promise<TokenParams>;
   me: () => Promise<UserDetails>;
   login: (user: UserDetails) => Promise<TokenParams>;
-  config: { TOKEN_KEY: string; REFRESH_TOKEN_KEY: string };
+  config: { TOKEN_KEY: string };
 }
 
 interface jwtManagerContext extends UserContextReducerParams {
