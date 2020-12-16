@@ -1,8 +1,6 @@
 import { UserDetails, UserContextReducerParams } from './constants/types';
 
-type Actions =
-  | { type: 'LOGIN'; payload: { user: UserDetails; access_token: string; refresh_token: string } | {} }
-  | { type: 'LOGOUT' };
+type Actions = { type: 'LOGIN'; payload: { user: UserDetails; token: string } | {} } | { type: 'LOGOUT' };
 
 const userContextReducer = (state: UserContextReducerParams, action: Actions): UserContextReducerParams => {
   switch (action.type) {

@@ -24,14 +24,14 @@ const initialState: UserContextReducerParams = {
  */
 const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh, me, login, config }) => {
   const [state, dispatch] = React.useReducer(userContextReducer, initialState);
-  const { TOKEN_KEY, REFRESH_TOKEN_KEY } = config;
+  const { TOKEN_KEY } = config;
 
   const refreshToken = useCallback(() => {
-    const refresh_token: string = Lockr.get(REFRESH_TOKEN_KEY);
-    if (state.authenticated || !refresh_token) {
+    const token: string = Lockr.get(TOKEN_KEY);
+    if (state.authenticated || !token) {
       dispatch({ type: 'LOGOUT' });
     } else {
-      axios.defaults.headers.Authorization = 'Bearer ' + refresh_token;
+      axios.defaults.headers.Authorization = 'Bearer ' + token;
       refresh()
         .then(handleTokenReceived)
         .catch((cause: any) => {
@@ -42,18 +42,12 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
 
   useEffect(refreshToken, []);
 
-  const handleTokenReceived = useCallback(async ({ access_token, refresh_token }: TokenParams) => {
-    let rToken = refresh_token;
-    Lockr.set(TOKEN_KEY, access_token);
-    if (rToken) {
-      Lockr.set(REFRESH_TOKEN_KEY, rToken);
-    } else {
-      rToken = Lockr.get(REFRESH_TOKEN_KEY);
-    }
-    axios.defaults.headers.Authorization = 'Bearer ' + access_token;
+  const handleTokenReceived = useCallback(async ({ token }: TokenParams) => {
+    Lockr.set(TOKEN_KEY, token);
+    axios.defaults.headers.Authorization = 'Bearer ' + token;
     return await me()
       .then((user: UserDetails) => {
-        dispatch({ type: 'LOGIN', payload: { user, access_token, refresh_token: rToken } });
+        dispatch({ type: 'LOGIN', payload: { user, token } });
         return user;
       })
       .catch((cause: any) => {
@@ -74,7 +68,6 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
 
   const _logout = useCallback(async () => {
     Lockr.rm(TOKEN_KEY);
-    Lockr.rm(REFRESH_TOKEN_KEY);
     axios.defaults.headers.Authorization = null;
     dispatch({ type: 'LOGOUT' });
     return await true;

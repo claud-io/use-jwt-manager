@@ -7,8 +7,7 @@ interface UserDetails {
 
 interface UserContextReducerParams {
   user?: UserDetails;
-  access_token?: string;
-  refresh_token?: string;
+  token?: string;
   initialized?: boolean;
   authenticated?: boolean;
   error?: string;
@@ -16,7 +15,6 @@ interface UserContextReducerParams {
 
 interface TokenParams {
   access_token: string;
-  refresh_token?: string;
   [x: string]: any;
 }
 
@@ -30,7 +28,7 @@ interface jwtManagerProps {
 interface jwtManagerContext extends UserContextReducerParams {
   login: (user: UserDetails) => Promise<UserDetails>;
   logout: () => Promise<boolean>;
-  refresh: () => void
+  refresh: () => void;
 }
 
 class JwtError extends Error {
