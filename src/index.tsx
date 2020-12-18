@@ -35,6 +35,7 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
       refresh()
         .then(handleTokenReceived)
         .catch((cause: any) => {
+          dispatch({ type: 'LOGOUT' });
           throw new JwtError('An error occurred trying to refresh the token', cause);
         });
     }
