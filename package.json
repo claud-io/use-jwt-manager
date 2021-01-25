@@ -4,7 +4,7 @@
     "name": "claudio biselli",
     "email": "cbiselli89@gmail.com"
   },
-  "version": "0.1.81",
+  "version": "0.1.82",
   "description": "hook for jwt auth",
   "repository": {
     "type": "git",
