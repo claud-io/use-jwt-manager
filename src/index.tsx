@@ -1,16 +1,9 @@
-import React, { useCallback } from 'react';
-import Lockr from 'lockr';
-import { useEffect } from 'react';
-import axios from 'axios';
-import userContextReducer from './userContextReducer';
-import {
-  UserContextReducerParams,
-  jwtManagerContext,
-  TokenParams,
-  UserDetails,
-  jwtManagerProps,
-  JwtError,
-} from './constants/types';
+import React, { useCallback } from "react";
+import Lockr from "lockr";
+import { useEffect } from "react";
+import axios from "axios";
+import userContextReducer from "./userContextReducer";
+import { UserContextReducerParams, jwtManagerContext, TokenParams, UserDetails, jwtManagerProps, JwtError } from "./constants/types";
 
 const initialState: UserContextReducerParams = {
   initialized: false,
@@ -29,13 +22,14 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
   const refreshToken = useCallback(() => {
     const refresh_token: string = Lockr.get(REFRESH_TOKEN_KEY);
     if (state.authenticated || !refresh_token) {
-      dispatch({ type: 'LOGOUT' });
+      dispatch({ type: "LOGOUT" });
     } else {
-      axios.defaults.headers.Authorization = 'Bearer ' + refresh_token;
+      axios.defaults.headers.Authorization = "Bearer " + refresh_token;
       refresh()
         .then(handleTokenReceived)
         .catch((cause: any) => {
-          throw new JwtError('An error occurred trying to refresh the token', cause);
+          dispatch({ type: "LOGOUT" });
+          throw new JwtError("An error occurred trying to refresh the token", cause);
         });
     }
   }, [state.authenticated]);
@@ -50,14 +44,14 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
     } else {
       rToken = Lockr.get(REFRESH_TOKEN_KEY);
     }
-    axios.defaults.headers.Authorization = 'Bearer ' + access_token;
+    axios.defaults.headers.Authorization = "Bearer " + access_token;
     return await me()
       .then((user: UserDetails) => {
-        dispatch({ type: 'LOGIN', payload: { user, access_token, refresh_token: rToken } });
+        dispatch({ type: "LOGIN", payload: { user, access_token, refresh_token: rToken } });
         return user;
       })
       .catch((cause: any) => {
-        throw new JwtError('An error occurred retrieving the user information', cause);
+        throw new JwtError("An error occurred retrieving the user information", cause);
       });
   }, []);
 
@@ -67,7 +61,7 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
         .then(handleTokenReceived)
         .then((user) => user)
         .catch((cause: any) => {
-          throw new JwtError('An error occurred trying to log in', cause);
+          throw new JwtError("An error occurred trying to log in", cause);
         }),
     []
   );
@@ -76,7 +70,7 @@ const useJwtManager: (props: jwtManagerProps) => jwtManagerContext = ({ refresh,
     Lockr.rm(TOKEN_KEY);
     Lockr.rm(REFRESH_TOKEN_KEY);
     axios.defaults.headers.Authorization = null;
-    dispatch({ type: 'LOGOUT' });
+    dispatch({ type: "LOGOUT" });
     return await true;
   }, []);
 
