@@ -1,33 +1,33 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-  entry: ['./src/index.tsx'],
+  entry: ["./src/index.tsx"],
   externals: {
     react: {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react',
+      root: "React",
+      commonjs2: "react",
+      commonjs: "react",
+      amd: "react",
     },
-    'react-dom': {
-      root: 'ReactDOM',
-      commonjs2: 'react-dom',
-      commonjs: 'react-dom',
-      amd: 'react-dom',
+    "react-dom": {
+      root: "ReactDOM",
+      commonjs2: "react-dom",
+      commonjs: "react-dom",
+      amd: "react-dom",
     },
-    axios: 'axios',
-    lockr: 'lockr',
+    axios: "axios",
+    lockr: "lockr",
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        use: ["babel-loader"],
       },
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: "ts-loader",
         exclude: /node_modules/,
       },
     ],
@@ -36,12 +36,12 @@ module.exports = {
     minimize: true,
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: [".tsx", ".ts", ".js"],
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
-    filename: 'index.js',
-    libraryTarget: 'commonjs2',
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
+    filename: "index.js",
+    libraryTarget: "umd",
   },
 };
